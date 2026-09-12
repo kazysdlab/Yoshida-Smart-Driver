@@ -1,0 +1,85 @@
+/**:
+  ros__parameters:
+    interface:
+      topic:
+        gamepad_state: "/gamepad/state"
+        camera_image: "/camera/image_raw"
+        control_manual: "/control/manual"
+        control_auto: "/control/auto"
+        control_select: "/control/select"
+        control_pwm: "/control/pwm"
+      service:
+        set_control_mode: "/set/control_mode"
+
+gamepad:
+  ros__parameters:
+    publish_hz: 20.0
+    gamepad:
+      type: "dualsense"
+      path: ""
+      search_words: ["dualsense", "wireless controller"]
+      deadzone: 0.01
+      read_hz: 20.0
+    verbose: 2
+
+ysd_gamepad:
+  ros__parameters:
+    keybind:
+      axis:
+        steering: "rx"
+        throttle: "ly"
+      button:
+        mode: "l1"
+        record_mode: "r1"
+    verbose: 2
+
+camera:
+  ros__parameters:
+    frame_publish_hz: 10.0
+    camera:
+      frame_id: "csi_camera_frame"
+      sensor_id: 0
+      capture_size: [1280, 720]
+      capture_hz: 30
+      resize: [84, 84]
+      flip_method: 0
+      patient: 0
+      read_hz: 30.0
+    verbose: 2
+
+ysd_machine_learning:
+  ros__parameters:
+    network:
+      num_stacks: 2
+    verbose: 2
+
+ysd_manager:
+  ros__parameters:
+    control:
+      init_control_mode: "manual"
+      publish_control_select_hz: 20.0
+      publish_control_mode_hz: 20.0
+    verbose: 2
+
+ysd_mapper:
+  ros__parameters:
+    map:
+      steering:
+        input: [-1.0, +1.0]
+        output: [1500, 2500]
+      throttle:
+        input: [-1.0, +1.0]
+        output: [1500, 2500]
+    verbose: 2
+
+ysd_pwm_driver:
+  ros__parameters:
+    driver:
+      bus_num: 7
+      address: 0x40
+      osc_freq_hz: 25_000_000
+      read_hz: 50.0
+    channels:
+      steering: 0
+      throttle: 1
+    verbose: 2

@@ -1,0 +1,5 @@
+uint8 change
+---
+bool accepted
+string mode
+string message
