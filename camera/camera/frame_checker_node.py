@@ -9,7 +9,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 
 # 自作パッケージ
-from .msg_matlike_converter import convert_msg_to_matlike
+from .msg_ndarray_converter import convert_msg_to_ndarray
 
 class FrameCheckerNode(Node):
     """
@@ -57,7 +57,7 @@ class FrameCheckerNode(Node):
         
         """
 
-        frame = convert_msg_to_matlike(msg)
+        frame = convert_msg_to_ndarray(msg)
 
         self.obs_buffer = frame
 

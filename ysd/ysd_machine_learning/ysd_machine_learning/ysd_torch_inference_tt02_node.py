@@ -1,6 +1,5 @@
 # 型
 from collections import deque
-from cv2.typing import MatLike
 
 # ROS2 コア
 import rclpy
@@ -16,12 +15,12 @@ import torch
 import numpy as np
 
 # 自作ライブラリ
-from .msg_matlike_converter import convert_msg_to_matlike
+from .msg_ndarray_converter import convert_msg_to_ndarray
 
 class YSDTorchInferenceTT02(Node):
     """
 
-    このノードは, YSD 固有の操作信号
+    このノードは, ニューラルネットワークを利用して YSD 固有の操作信号を出力するノードです.
 
     """
 
@@ -45,7 +44,7 @@ class YSDTorchInferenceTT02(Node):
         self.verbose = self.get_parameter("verbose").get_parameter_value().integer_value
 
         # 受け取ったメッセージの一時的な保管場所
-        self.obs_buffer: deque[MatLike] = deque(maxlen=self.num_stacks)
+        self.obs_buffer: deque[np.ndarray] = deque(maxlen=self.num_stacks)
         self.init_stack_buffer_frame = True
 
         # パブリッシャー 
@@ -85,7 +84,7 @@ class YSDTorchInferenceTT02(Node):
         
         """
 
-        frame = convert_msg_to_matlike(sub_msg)
+        frame = convert_msg_to_ndarray(sub_msg)
 
         # スタック用フレームが足りてない場合に同一フレームで埋める
         if self.init_stack_buffer_frame:

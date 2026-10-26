@@ -1,6 +1,6 @@
 import os
 from launch import LaunchDescription
-from launch.actions import SetEnvironmentVariable
+from launch.actions import SetEnvironmentVariable, DeclareLaunchArgument
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
@@ -13,6 +13,13 @@ def generate_launch_description():
         SetEnvironmentVariable(
             name="RCUTILS_CONSOLE_OUTPUT_FORMAT",
             value="[{severity}]: {message}"
+        ),
+
+        # ===== Args =====
+        DeclareLaunchArgument(
+            "model_path",
+            default_value="model.onnx",
+            description="Path to ONNX model"
         ),
 
         # ===== IO =====

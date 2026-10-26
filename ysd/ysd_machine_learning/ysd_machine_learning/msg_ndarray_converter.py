@@ -1,19 +1,16 @@
-# 型
-from cv2.typing import MatLike
-
 # ROS2 メッセージ型
 from sensor_msgs.msg import Image
 
 # 外部ライブラリ
 import numpy as np
 
-def convert_matlike_to_msg(frame: MatLike, time_stamp, frame_id) -> Image:
+def convert_ndarray_to_msg(frame: np.ndarray, time_stamp, frame_id) -> Image:
     """
 
     カメラ画像のをImageメッセージに変換する。
 
     Args:
-        frame (MatLike): 画像
+        frame (np.ndarray): 画像
 
     Returns:
         msg (Image): 画像のメッセージ
@@ -36,7 +33,7 @@ def convert_matlike_to_msg(frame: MatLike, time_stamp, frame_id) -> Image:
 
     return msg
 
-def convert_msg_to_matlike(msg: Image) -> MatLike:
+def convert_msg_to_ndarray(msg: Image) -> np.ndarray:
     """
 
     バイト列を画像に変換する。
@@ -45,7 +42,7 @@ def convert_msg_to_matlike(msg: Image) -> MatLike:
         msg (Image): メッセージ
 
     Returns:
-        frame (MatLike): 画像
+        frame (np.ndarray): 画像
 
     """
     # 情報の取得

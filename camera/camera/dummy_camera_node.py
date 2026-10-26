@@ -7,7 +7,7 @@ from sensor_msgs.msg import Image
 
 # 自作パッケージ
 from .camera import DummyCamera
-from .msg_matlike_converter import convert_matlike_to_msg
+from .msg_ndarray_converter import convert_ndarray_to_msg
 
 class DummyCameraNode(Node):
     """
@@ -35,7 +35,7 @@ class DummyCameraNode(Node):
         self.declare_parameter("verbose", 2)
 
         # パラメータ参照
-        self.topic_camera = self.get_parameter("interface.topic.camera").get_parameter_value().string_value
+        self.topic_camera_image = self.get_parameter("interface.topic.camera_image").get_parameter_value().string_value
         self.frame_publish_hz = self.get_parameter("frame_publish_hz").get_parameter_value().double_value
 
         self.frame_id = self.get_parameter("camera.frame_id").get_parameter_value().string_value
@@ -50,7 +50,7 @@ class DummyCameraNode(Node):
         self.verbose = self.get_parameter("verbose").get_parameter_value().integer_value
 
         # パブリッシャー
-        self.publisher = self.create_publisher(Image, self.topic_camera, 10)
+        self.publisher = self.create_publisher(Image, self.topic_camera_image, 10)
         self.publish_timer = self.create_timer(1/self.frame_publish_hz, self._publish)
 
         # パラメータ整形
@@ -78,7 +78,7 @@ class DummyCameraNode(Node):
             self.logger.info(f"Parameters:")
             self.logger.info(f"  interface:")
             self.logger.info(f"    topic:")
-            self.logger.info(f"      control_manual: {self.topic_camera}")
+            self.logger.info(f"      camera_image: {self.topic_camera_image}")
             self.logger.info(f"  frame_publish_hz: {self.frame_publish_hz}")
             self.logger.info(f"  camera:")
             self.logger.info(f"    frame_id: {self.frame_id}")
@@ -115,7 +115,7 @@ class DummyCameraNode(Node):
             return
 
         # メッセージへの変換
-        msg = convert_matlike_to_msg(
+        msg = convert_ndarray_to_msg(
             frame=self.frame,
             time_stamp=self.get_clock().now().to_msg(),
             frame_id=self.frame_id
