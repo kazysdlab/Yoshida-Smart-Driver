@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            "ysd_h5_writer_tt02_node = ysd_machine_learning.record.ysd_h5_record_tt02_node:main",
             "ysd_torch_inference_tt02_node = ysd_machine_learning.ysd_torch_inference_tt02_node:main"
         ],
     },

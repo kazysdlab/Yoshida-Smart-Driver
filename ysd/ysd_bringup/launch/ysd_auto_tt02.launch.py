@@ -1,6 +1,7 @@
 import os
 from launch import LaunchDescription
 from launch.actions import SetEnvironmentVariable, DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
@@ -20,6 +21,11 @@ def generate_launch_description():
             "model_path",
             default_value="model.onnx",
             description="Path to ONNX model"
+        ),
+        DeclareLaunchArgument(
+            "output_dir",
+            default_value="./data",
+            description="Path to output dir"
         ),
 
         # ===== IO =====
@@ -63,7 +69,22 @@ def generate_launch_description():
             package="ysd_machine_learning",
             executable="ysd_torch_inference_tt02_node",
             name="inference",
-            parameters=[config],
+            parameters=[
+                config,
+                {"network.model_path": LaunchConfiguration("model_path")}
+            ],
+            output="screen"
+        ),
+
+        # データ収集
+        Node(
+            package="ysd_machine_learning",
+            executable="ysd_h5_record_tt02_node",
+            name="inference",
+            parameters=[
+                config,
+                {"record.output_dir": LaunchConfiguration("output_dir")}
+            ],
             output="screen"
         ),
         
